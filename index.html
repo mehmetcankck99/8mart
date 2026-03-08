@@ -241,6 +241,43 @@
         height: 240px;
       }
     }
+    .tap-heart {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  font-size: 22px;
+  animation: tapFloat 1.5s ease-out forwards;
+}
+
+@keyframes tapFloat {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.8);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -120px) scale(1.6);
+  }
+}
+.confetti {
+  position: fixed;
+  top: -20px;
+  pointer-events: none;
+  z-index: 9998;
+  animation: confettiFall linear forwards;
+  border-radius: 3px;
+}
+
+@keyframes confettiFall {
+  0% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(110vh) rotate(720deg);
+    opacity: 0.9;
+  }
+}
   </style>
 </head>
 <body>
@@ -330,59 +367,135 @@
     </div>
   </main>
 
-  <script>
-    const heartsContainer = document.getElementById("hearts");
+ <script>
+  const heartsContainer = document.getElementById("hearts");
 
-    for (let i = 0; i < 24; i++) {
-      const heart = document.createElement("div");
-      heart.className = "heart";
-      heart.innerText = Math.random() > 0.5 ? "❤" : "🌸";
-      heart.style.left = Math.random() * 100 + "vw";
-      heart.style.animationDuration = 6 + Math.random() * 8 + "s";
-      heart.style.animationDelay = Math.random() * 5 + "s";
-      heart.style.fontSize = 14 + Math.random() * 18 + "px";
-      heartsContainer.appendChild(heart);
-    }
+  for (let i = 0; i < 24; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart";
 
-    function startExperience() {
-      const music = document.getElementById("bgMusic");
-      const startScreen = document.getElementById("startScreen");
-      const mainContent = document.getElementById("mainContent");
+    const symbols = ["🌸","🍓","🍒","🎈","🎊","❤", "💖", "💗", "🌸", "🌺","🌼","🌷","🌻","💞","💗","💖","🖤","🤍"];
+    heart.innerText = symbols[Math.floor(Math.random() * symbols.length)];
 
-      music.play().catch(() => {
-        console.log("Müzik başlatılamadı.");
-      });
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = 6 + Math.random() * 8 + "s";
+    heart.style.animationDelay = Math.random() * 5 + "s";
+    heart.style.fontSize = 14 + Math.random() * 18 + "px";
 
-      startScreen.style.display = "none";
-      mainContent.classList.add("show");
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+    heartsContainer.appendChild(heart);
+  }
 
-    function showMessage() {
-      const message = document.getElementById("specialMessage");
-      message.style.display = "block";
-      message.scrollIntoView({ behavior: "smooth", block: "center" });
-    }
-    const startDate = new Date("2024-10-25T00:00:00");
+  function startExperience() {
 
-function updateCounter() {
-  const now = new Date();
-  const diff = now - startDate;
+  const music = document.getElementById("bgMusic");
+  const startScreen = document.getElementById("startScreen");
+  const mainContent = document.getElementById("mainContent");
 
-  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
-  const minutes = Math.floor(diff / (1000 * 60)) % 60;
-  const seconds = Math.floor(diff / 1000) % 60;
+  music.play().catch(() => {
+    console.log("Müzik başlatılamadı.");
+  });
 
-  document.getElementById("loveCounter").innerHTML =
-    days + " gün " +
-    hours + " saat " +
-    minutes + " dakika " +
-    seconds + " saniye";
+  startScreen.style.display = "none";
+  mainContent.classList.add("show");
+
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  launchConfetti();
 }
 
-setInterval(updateCounter, 1000);
-updateCounter();
-  </script>
+  function showMessage() {
+    const message = document.getElementById("specialMessage");
+    message.style.display = "block";
+    message.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  const startDate = new Date("2024-10-25T00:00:00");
+
+  function updateCounter() {
+    const now = new Date();
+    const diff = now - startDate;
+
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+    const minutes = Math.floor(diff / (1000 * 60)) % 60;
+    const seconds = Math.floor(diff / 1000) % 60;
+
+    const counter = document.getElementById("loveCounter");
+    if (counter) {
+      counter.innerHTML =
+        days + " gün " +
+        hours + " saat " +
+        minutes + " dakika " +
+        seconds + " saniye";
+    }
+  }
+
+  setInterval(updateCounter, 1000);
+  updateCounter();
+
+  document.addEventListener("click", function(e) {
+    const tapHeart = document.createElement("div");
+    tapHeart.className = "tap-heart";
+
+    const icons = ["❤", "💖", "💗", "🌸"];
+    tapHeart.innerText = icons[Math.floor(Math.random() * icons.length)];
+
+    tapHeart.style.left = e.clientX + "px";
+    tapHeart.style.top = e.clientY + "px";
+
+    document.body.appendChild(tapHeart);
+
+    setTimeout(() => {
+      tapHeart.remove();
+    }, 1800);
+  });
+  function createConfettiPiece() {
+
+  const colors = ["#ff7da2","#ffb6c1","#ffc0cb","#ffd6e0","#fff0f5"];
+
+  const confetti = document.createElement("div");
+  confetti.className = "confetti";
+
+  confetti.style.left = Math.random() * 100 + "vw";
+  confetti.style.background = colors[Math.floor(Math.random()*colors.length)];
+
+  confetti.style.width = 6 + Math.random()*6 + "px";
+  confetti.style.height = 10 + Math.random()*10 + "px";
+
+  confetti.style.animationDuration = 2 + Math.random()*2 + "s";
+
+  document.body.appendChild(confetti);
+
+  setTimeout(()=>{
+    confetti.remove();
+  },4000);
+}
+
+
+function launchConfetti(){
+
+  let time = 0;
+
+  const interval = setInterval(()=>{
+
+    let pieces = 8;
+
+    if(time > 2000) pieces = 4;
+    if(time > 3500) pieces = 2;
+
+    for(let i=0;i<pieces;i++){
+      createConfettiPiece();
+    }
+
+    time += 200;
+
+    if(time > 5000){
+      clearInterval(interval);
+    }
+
+  },200);
+
+}
+</script>
 </body>
 </html>
