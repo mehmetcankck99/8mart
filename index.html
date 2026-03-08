@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Senin İçin ❤️</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ffe4ec, #fff7f9, #ffeef3);
+      color: #5a3b45;
+      overflow-x: hidden;
+    }
+
+    .hearts {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .heart {
+      position: absolute;
+      bottom: -30px;
+      font-size: 18px;
+      opacity: 0.55;
+      animation: floatUp linear infinite;
+    }
+
+    @keyframes floatUp {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0;
+      }
+      15% {
+        opacity: 0.55;
+      }
+      100% {
+        transform: translateY(-110vh) scale(1.25);
+        opacity: 0;
+      }
+    }
+
+    .start-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .start-card {
+      max-width: 520px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      padding: 36px 26px;
+      text-align: center;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .start-card h1 {
+      font-size: 2.2rem;
+      margin-bottom: 14px;
+    }
+
+    .start-card p {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+
+    .btn {
+      background: #ff7da2;
+      border: none;
+      color: white;
+      padding: 14px 26px;
+      border-radius: 999px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: 0.25s ease;
+      box-shadow: 0 8px 18px rgba(255, 125, 162, 0.3);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.02);
+      background: #ff6590;
+    }
+
+    .main-content {
+      display: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    .show {
+      display: block;
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 20px;
+    }
+
+    .hero-card {
+      max-width: 760px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.82);
+      border-radius: 30px;
+      padding: 40px 26px;
+      text-align: center;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08);
+    }
+
+    .hero-card h2 {
+      font-size: 2.5rem;
+      margin-bottom: 16px;
+    }
+
+    .hero-card .subtitle {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 70px 20px;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 28px;
+    }
+
+    .love-list {
+      display: grid;
+      gap: 16px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .love-item {
+      background: rgba(255, 255, 255, 0.8);
+      padding: 18px 20px;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      font-size: 1.03rem;
+      line-height: 1.6;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+    }
+
+    .photo-card {
+      background: rgba(255, 255, 255, 0.82);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .photo-note {
+      padding: 14px;
+      font-size: 0.98rem;
+      line-height: 1.5;
+      text-align: center;
+    }
+
+    .surprise-box {
+      text-align: center;
+      background: rgba(255, 255, 255, 0.82);
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 34px 22px;
+      border-radius: 26px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.06);
+    }
+
+    .message {
+      margin-top: 22px;
+      display: none;
+      font-size: 1.08rem;
+      line-height: 1.9;
+      background: #fff3f7;
+      padding: 20px;
+      border-radius: 18px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 30px 20px 50px;
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .small {
+      margin-top: 10px;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 600px) {
+      .start-card h1,
+      .hero-card h2 {
+        font-size: 1.8rem;
+      }
+
+      .hero-card .subtitle,
+      .start-card p,
+      .message,
+      .love-item {
+        font-size: 1rem;
+      }
+
+      .photo-card img {
+        height: 240px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hearts" id="hearts"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="muzik.mp3" type="audio/mpeg" />
+  </audio>
+
+  <section class="start-screen" id="startScreen">
+    <div class="start-card">
+      <h1>Dünyanın en değerli kadını için küçük bir sürpriz 💖</h1>
+      <p>
+        Bugün yanında olmayı, sana çiçek almayı ve seni daha çok mutlu etmeyi çok isterdim.
+        Şu an hasta olduğum için gelemiyorum ama senin için kalpten bir şey hazırladım.
+      </p>
+      <button class="btn" onclick="startExperience()">Müziği Başlat ve Aç ✨</button>
+      <p class="small">Kadınlar Günün kutlu olsun sevgilim 🌸</p>
+    </div>
+  </section>
+
+  <main class="main-content" id="mainContent">
+    <section class="hero">
+      <div class="hero-card">
+        <h2>İyi ki varsın aşkım ❤️</h2>
+        <p class="subtitle">
+          Bazen insan birine denk gelir ve her şey biraz daha güzel olmaya başlar.
+          Benim için o kişi sensin. Yanında olamasam da kalbim bugün de hep senin yanında.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+  <h3 class="section-title">Seninle geçen zaman ⏳</h3>
+
+  <div class="surprise-box">
+    <p style="margin-bottom:20px;font-size:1.1rem;">
+      25 Ekim 2024'ten beri hayatımın en güzel zamanlarını seninle yaşıyorum.
+    </p>
+
+    <div id="loveCounter" style="font-size:1.6rem;font-weight:bold;">
+      Yükleniyor...
+    </div>
+
+    <p style="margin-top:20px">
+      Seninle geçen her saniye benim için çok değerli. ❤️
+    </p>
+  </div>
+</section>
+
+    <section class="section">
+      <h3 class="section-title">Bizden birkaç an 📸</h3>
+      <div class="gallery">
+        <div class="photo-card">
+          <img src="foto1.jpg" alt="Birlikte fotoğraf 1" />
+          <div class="photo-note">Gördüğüm en güzel manzara senin gülüşün.</div>
+        </div>
+
+        <div class="photo-card">
+          <img src="foto2.jpg" alt="Birlikte fotoğraf 2" />
+          <div class="photo-note">Seninle geçen her an, sıradan bir zamanı bile güzel bir hatıraya dönüştürüyor..</div>
+        </div>
+
+        <div class="photo-card">
+          <img src="foto3.jpg" alt="Birlikte fotoğraf 3" />
+          <div class="photo-note">Senin yanımda olduğunu bilmek bana her zaman güç veriyor.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="surprise-box">
+        <h3 class="section-title">Bugünün sürprizi 🌷</h3>
+        <button class="btn" onclick="showMessage()">Bana tıkla</button>
+        <div class="message" id="specialMessage">
+          Kadınlar Günün kutlu olsun sevgilim.<br><br>
+          Bugün yanında olup sana çiçek vermeyi, sarılmayı ve yüzünü güldürmeyi çok isterdim.
+          Şu an bunu yapamasam da seni ne kadar sevdiğimi hissettirecek küçük bir şey bırakmak istedim.<br><br>
+          Sen benim için çok özelsin. Hayatımdaki varlığın, sesin, gülüşün ve kalbin benim için çok kıymetli.
+          İyi ki varsın, iyi ki hayatımdasın. 💖
+        </div>
+      </div>
+    </section>
+
+    <div class="footer">
+      Bu siteyi seni mutlu etmek isteyen hasta ama sana çok aşık biri yaptı. 🤍
+    </div>
+  </main>
+
+  <script>
+    const heartsContainer = document.getElementById("hearts");
+
+    for (let i = 0; i < 24; i++) {
+      const heart = document.createElement("div");
+      heart.className = "heart";
+      heart.innerText = Math.random() > 0.5 ? "❤" : "🌸";
+      heart.style.left = Math.random() * 100 + "vw";
+      heart.style.animationDuration = 6 + Math.random() * 8 + "s";
+      heart.style.animationDelay = Math.random() * 5 + "s";
+      heart.style.fontSize = 14 + Math.random() * 18 + "px";
+      heartsContainer.appendChild(heart);
+    }
+
+    function startExperience() {
+      const music = document.getElementById("bgMusic");
+      const startScreen = document.getElementById("startScreen");
+      const mainContent = document.getElementById("mainContent");
+
+      music.play().catch(() => {
+        console.log("Müzik başlatılamadı.");
+      });
+
+      startScreen.style.display = "none";
+      mainContent.classList.add("show");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showMessage() {
+      const message = document.getElementById("specialMessage");
+      message.style.display = "block";
+      message.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
+    const startDate = new Date("2024-10-25T00:00:00");
+
+function updateCounter() {
+  const now = new Date();
+  const diff = now - startDate;
+
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+  const minutes = Math.floor(diff / (1000 * 60)) % 60;
+  const seconds = Math.floor(diff / 1000) % 60;
+
+  document.getElementById("loveCounter").innerHTML =
+    days + " gün " +
+    hours + " saat " +
+    minutes + " dakika " +
+    seconds + " saniye";
+}
+
+setInterval(updateCounter, 1000);
+updateCounter();
+  </script>
+</body>
+</html>
